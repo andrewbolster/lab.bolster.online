@@ -41,6 +41,6 @@ jobs:
           helm upgrade --install cert-manager jetstack/cert-manager \
             --namespace cert-manager --create-namespace \
             --values helm/values/cert-manager.yaml
-      - name: Apply ClusterIssuer
+      - name: Apply Manifests
         run: |-
-          kubectl apply -f k8s/manifests/cluster-issuer.yaml
+          kubectl apply -f k8s/manifests/*.yaml
