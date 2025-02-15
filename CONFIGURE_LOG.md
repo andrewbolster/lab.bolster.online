@@ -47,6 +47,8 @@ Update your KUBECONFIG with the following command:
 
 and add the contents to ~/.kube/config to Github secrets as `KUBECONFIG` (Don't do anything funny with quotes, leave it 'bare')
 
+Manually create a 'labs' repository in GCR (I did it in London region so the PKG_REPO is europe-west2-docker.pkg.dev)
+
 
 # Other Junk
 * Creation of 'hello-world' app

@@ -12,6 +12,7 @@ env:
   SERVICE_NAME: hello-world  # container name, should normally be {{ github.repository }}
   PKG_REPO: europe-west2-docker.pkg.dev
   PROJECT_ID: bolsterlab
+  ARTEFACTS_REPO: labs # 
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,7 +41,7 @@ jobs:
           context: "{{defaultContext}}:hello_world.example"
           file: ./build/Dockerfile  # path to Dockerfile, should standardise to build/Dockerfile for all services
           push: true
-          tags: ${{ env.PKG_REPO }}/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+          tags: ${{ env.PKG_REPO }}/${{ env.PROJECT_ID }}/${{env.PROJECT_ID}}/${{ env.SERVICE_NAME }}:${{ github.sha }}
       - name: Deploy to GKE
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
