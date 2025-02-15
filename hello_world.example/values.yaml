@@ -1,6 +1,6 @@
 ---
 image:
-  repository: gcr.io/bolsterlab/hello-world
+  repository: gcr.io/bolsterlab/lab/hello-world
   tag: latest
   pullPolicy: IfNotPresent
 service:
@@ -11,11 +11,12 @@ ingress:
   className: ''
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-prod
   hosts:
     - host: hello.lab.bolster.online
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
-    - hosts: [hello-world.lab.bolster.online]
-      secretName: hello-world-lab-bolster-online-tls
+    - hosts: [hello.lab.bolster.online]
+      secretName: lab-bolster-online-tls
