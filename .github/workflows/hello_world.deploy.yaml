@@ -18,18 +18,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Set up Google Cloud SDK Auth
-        uses: 'google-github-actions/auth@v2'
+      # - name: Set up Google Cloud SDK Auth
+      #   uses: 'google-github-actions/auth@v2'
+      #   with:
+      #       credentials_json: '${{ secrets.GCR_JSON_KEY }}'
+      # - name: Set up Google Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v2
+      #   with:
+      #       project_id: ${{ env.PROJECT_ID }}
+      # - run: |-
+      #     gcloud --quiet auth configure-docker ${{ env.PKG_REPO }}
+      - name: Log in to Google Container Registry
+        uses: docker/login-action@v3
         with:
-            credentials_json: '${{ secrets.GCR_JSON_KEY }}'
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-            project_id: ${{ env.PROJECT_ID }}
-      - run: |-
-          gcloud --quiet auth configure-docker ${{ env.PKG_REPO }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+          registry: ${{ env.PKG_REPO }}
+          username: _json_key
+          password: '${{ secrets.GCR_JSON_KEY }}'
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
