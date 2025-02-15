@@ -9,6 +9,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Set up Google Cloud SDK Auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+            credentials_json: '${{ secrets.GCR_JSON_KEY }}'
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+            project_id: 'bolsterlab'
+            install_components: 'gke-gcloud-auth-plugin,kubectl'
       - name: Set up Kubeconfig
         run: |
             mkdir -p $HOME/.kube

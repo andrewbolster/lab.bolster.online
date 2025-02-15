@@ -45,7 +45,7 @@ Create Service account from GCP IAM & Admin and assign Storage Admin role; downl
 Update your KUBECONFIG with the following command:
 `gcloud container clusters get-credentials bolsterlab-cluster --zone europe-west2-b --project bolsterlab`
 
-and add the contents to ~/.kube/config to Github secrets as `KUBECONFIG`
+and add the contents to ~/.kube/config to Github secrets as `KUBECONFIG` (Don't do anything funny with quotes, leave it 'bare')
 
 
 # Other Junk
