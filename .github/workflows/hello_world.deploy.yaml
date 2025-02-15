@@ -16,6 +16,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Set up Google Cloud SDK Auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+            credentials_json: '${{ secrets.GCR_JSON_KEY }}'
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+            project_id: 'bolsterlab'
+      - run: |-
+          gcloud --quiet auth configure-docker
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Log in to Google Container Registry
