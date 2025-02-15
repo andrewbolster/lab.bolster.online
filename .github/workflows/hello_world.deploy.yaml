@@ -19,35 +19,33 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      # - name: Set up Google Cloud SDK Auth
-      #   uses: 'google-github-actions/auth@v2'
-      #   with:
-      #       credentials_json: '${{ secrets.GCR_JSON_KEY }}'
-      # - name: Set up Google Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@v2
-      #   with:
-      #       project_id: ${{ env.PROJECT_ID }}
-      # - run: |-
-      #     gcloud --quiet auth configure-docker ${{ env.PKG_REPO }}
-      - name: Log in to Google Container Registry
-        uses: docker/login-action@v3
+      - name: Set up Google Cloud SDK Auth
+        uses: 'google-github-actions/auth@v2'
         with:
-          registry: ${{ env.PKG_REPO }}
-          username: _json_key
-          password: '${{ secrets.GCR_JSON_KEY }}'
+            credentials_json: '${{ secrets.GCR_JSON_KEY }}'
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+            project_id: ${{ env.PROJECT_ID }}
+      - run: |-
+          gcloud --quiet auth configure-docker ${{ env.PKG_REPO }}
+      # - name: Log in to Google Container Registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ${{ env.PKG_REPO }}
+      #     username: _json_key
+      #     password: '${{ secrets.GCR_JSON_KEY }}'
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}:hello_world.example"
           file: ./build/Dockerfile  # path to Dockerfile, should standardise to build/Dockerfile for all services
           push: true
-          tags: ${{ env.PKG_REPO }}/${{ env.PROJECT_ID }}/${{env.PROJECT_ID}}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+          tags: ${{ env.PKG_REPO }}/${{ env.PROJECT_ID }}/${{env.ARTEFACTS_REPO}}/${{ env.SERVICE_NAME }}:${{ github.sha }}
       - name: Deploy to GKE
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
         working-directory: hello_world.example  # THIS SHOULDN'T BE NECESSARY IN A REAL PROJECT
         run: |-
           helm upgrade --install  ${{ env.SERVICE_NAME }} ./service-chart \
-          --set image.repository=${{ env.PKG_REPO }}/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }} \
+          --set image.repository=${{ env.PKG_REPO }}/${{ env.ARTEFACTS_REPO }}/${{ env.SERVICE_NAME }} \
           --set image.tag=${{ github.sha }} \
           --values ./values.yaml
