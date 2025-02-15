@@ -1,0 +1,21 @@
+---
+image:
+  repository: gcr.io/bolsterlab/hello-world
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: true
+  className: ''
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: hello.lab.bolster.online
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts: [hello-world.lab.bolster.online]
+      secretName: hello-world-lab-bolster-online-tls

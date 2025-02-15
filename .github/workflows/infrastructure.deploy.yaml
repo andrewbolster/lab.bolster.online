@@ -1,0 +1,24 @@
+---
+name: Deploy Infrastructure
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Deploy Ingress Controller
+        run: |
+          helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+            --namespace ingress-nginx --create-namespace \
+            --values helm/values/ingress-values.yaml
+      - name: Deploy Cert-Manager
+        run: |
+          helm upgrade --install cert-manager jetstack/cert-manager \
+            --namespace cert-manager --create-namespace \
+            --values helm/values/cert-manager.yaml
+      - name: Apply ClusterIssuer
+        run: |-
+          kubectl apply -f k8s/manifests/cluster-issuer.yaml
