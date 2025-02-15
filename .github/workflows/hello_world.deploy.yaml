@@ -55,6 +55,6 @@ jobs:
         working-directory: hello_world.example  # THIS SHOULDN'T BE NECESSARY IN A REAL PROJECT
         run: |-
           helm upgrade --install  ${{ env.SERVICE_NAME }} ./service-chart \
-          --set image.repository=${{ env.PKG_REPO }}/${{ env.ARTEFACTS_REPO }}/${{ env.SERVICE_NAME }} \
+          --set image.repository=${{ env.PKG_REPO }}/${{ env.PROJECT_ID }}/${{ env.ARTEFACTS_REPO }}/${{ env.SERVICE_NAME }} \
           --set image.tag=${{ github.sha }} \
           --values ./values.yaml
