@@ -40,7 +40,9 @@ helm install \
 # CR setup
 `gcloud services enable containerregistry.googleapis.com`
 
-Create Service account from GCP IAM & Admin and assign Storage Admin role; download the JSON key and Add it to the GitHub secrets as `GCR_JSON_KEY`
+Create Service account from GCP IAM & Admin and assign Storage Admin, Artifact Registry Create-on-Push Writer, and Kubernetes Engine Service Agent roles; download the JSON key and Add it to the GitHub secrets as `GCR_JSON_KEY`
+
+**NOTE** If you're doing this in a multi user environment you might not want to use the 'Create on Push' role as it will allow anyone to create a repository in the registry, which might let people skip over livecycle/security monitoring
 
 Update your KUBECONFIG with the following command:
 `gcloud container clusters get-credentials bolsterlab-cluster --zone europe-west2-b --project bolsterlab`
