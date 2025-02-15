@@ -18,10 +18,11 @@ jobs:
         with:
             project_id: 'bolsterlab'
             install_components: 'gke-gcloud-auth-plugin,kubectl'
-      - name: Set up Kubeconfig
-        run: |
-            mkdir -p $HOME/.kube
-            echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+      - name: Get GKE Credentials
+        uses: 'google-github-actions/get-gke-credentials@v2'
+        with:
+            cluster_name: 'bolsterlab-cluster'
+            location: 'europe-west2-b'
       - name: Deploy Ingress Controller
         run: |
           helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
