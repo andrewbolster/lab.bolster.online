@@ -10,15 +10,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Deploy Ingress Controller
+        env:
+            KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
           helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
             --namespace ingress-nginx --create-namespace \
-            --values helm/values/ingress-values.yaml
+            --values helm/values/ingress.yaml
       - name: Deploy Cert-Manager
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}s
         run: |
           helm upgrade --install cert-manager jetstack/cert-manager \
             --namespace cert-manager --create-namespace \
             --values helm/values/cert-manager.yaml
       - name: Apply ClusterIssuer
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}s
         run: |-
           kubectl apply -f k8s/manifests/cluster-issuer.yaml
