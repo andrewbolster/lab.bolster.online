@@ -1,43 +1,71 @@
 ---
-name: Deploy Infrastructure
-on:
-  push:
-    branches: [main]
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Google Cloud SDK Auth
-        uses: 'google-github-actions/auth@v2'
-        with:
-            credentials_json: '${{ secrets.GCR_JSON_KEY }}'
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-            project_id: 'bolsterlab'
-            install_components: 'gke-gcloud-auth-plugin,kubectl'
-      - name: Get GKE Credentials
-        uses: 'google-github-actions/get-gke-credentials@v2'
-        with:
-            cluster_name: 'bolsterlab-cluster'
-            location: 'europe-west2-b'
-      - name: Update Helm Repositories
-        run: |
-          helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-          helm repo add jetstack https://charts.jetstack.io
-          helm repo update
-      - name: Deploy Ingress Controller
-        run: |
-          helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
-            --namespace ingress-nginx --create-namespace \
-            --values helm/values/ingress.yaml
-      - name: Deploy Cert-Manager
-        run: |
-          helm upgrade --install cert-manager jetstack/cert-manager \
-            --namespace cert-manager --create-namespace \
-            --values helm/values/cert-manager.yaml
-      - name: Apply ClusterIssuer
-        run: |-
-          kubectl apply -f k8s/manifests/cluster-issuer.yaml
+    name: Deploy Infrastructure
+    on:
+      push:
+        branches: [main]
+    jobs:
+      checkout:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v2
+    
+      setup:
+        runs-on: ubuntu-latest
+        needs: checkout
+        steps:
+          - name: Set up Google Cloud SDK Auth
+            uses: 'google-github-actions/auth@v2'
+            with:
+                credentials_json: '${{ secrets.GCR_JSON_KEY }}'
+    
+          - name: Set up Google Cloud SDK
+            uses: google-github-actions/setup-gcloud@v2
+            with:
+                project_id: 'bolsterlab'
+                install_components: 'gke-gcloud-auth-plugin,kubectl'
+    
+          - name: Get GKE Credentials
+            uses: 'google-github-actions/get-gke-credentials@v2'
+            with:
+                cluster_name: 'bolsterlab-cluster'
+                location: 'europe-west2-b'
+    
+      deploy-ingress:
+        runs-on: ubuntu-latest
+        needs: setup
+        if: github.event_name == 'push' && contains(github.event.head_commit.message, 'helm/values/ingress.yaml')
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v2
+    
+          - name: Deploy Ingress Controller
+            run: |
+              helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+                --namespace ingress-nginx --create-namespace \
+                --values helm/values/ingress.yaml
+    
+      deploy-cert-manager:
+        runs-on: ubuntu-latest
+        needs: setup
+        if: github.event_name == 'push' && contains(github.event.head_commit.message, 'helm/values/cert-manager.yaml')
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v2
+    
+          - name: Deploy Cert-Manager
+            run: |
+              helm upgrade --install cert-manager jetstack/cert-manager \
+                --namespace cert-manager --create-namespace \
+                --values helm/values/cert-manager.yaml
+    
+      apply-cluster-issuer:
+        runs-on: ubuntu-latest
+        needs: setup
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v2
+    
+          - name: Apply ClusterIssuer
+            run: |
+              kubectl apply -f k8s/manifests/cluster-issuer.yaml
