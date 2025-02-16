@@ -10,10 +10,12 @@
  Visit [GCP Compute Engine API](https://console.cloud.google.com/marketplace/product/google/compute.googleapis.com) and enable the API.
 
  `gcloud config set project bolsterlab`
+
+ ## GKE Cluster initialisation
 `gcloud container clusters create bolsterlab-cluster --num-nodes=3 --zone=europe-west2-b`
 `gcloud container clusters get-credentials bolsterlab-cluster --zone=europe-west2-b` # Probably unnecessary but just to be sure
 
-# Helm setup
+## Helm setup
 `brew install helm`
 `helm repo add stable https://charts.helm.sh/stable`
 `helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx`
@@ -24,7 +26,7 @@
   --namespace ingress-nginx --create-namespace
 `kubectl get svc -w -n ingress-nginx` # Wait for the external IP to be assigned
 
-# Cert Manager setup
+## Cert Manager setup
 
 Check [here](https://cert-manager.io/docs/installation/helm/#2-install-cert-manager) for the latest version of cert-manager
 
@@ -37,7 +39,7 @@ helm install \
   --set crds.enabled=true
 `
 
-# CR setup
+## CR setup
 `gcloud services enable containerregistry.googleapis.com`
 
 Create Service account from GCP IAM & Admin and assign Storage Admin, Artifact Registry Create-on-Push Writer, and Kubernetes Engine Service Agent roles; download the JSON key and Add it to the GitHub secrets as `GCR_JSON_KEY`
@@ -49,7 +51,7 @@ Update your KUBECONFIG with the following command:
 
 and add the contents to ~/.kube/config to Github secrets as `KUBECONFIG` (Don't do anything funny with quotes, leave it 'bare')
 
-Manually create a 'labs' repository in GCR (I did it in London region so the PKG_REPO is europe-west2-docker.pkg.dev)
+~Manually create a 'labs' repository in GCR (I did it in London region so the PKG_REPO is europe-west2-docker.pkg.dev)~ might be unnecessary with the 'Create on Push' role
 
 
 # Other Junk
