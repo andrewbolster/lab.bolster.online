@@ -43,4 +43,4 @@ jobs:
             --values helm/values/cert-manager.yaml
       - name: Apply Manifests
         run: |-
-          kubectl apply -f k8s/manifests/*.yaml
+          noglob kubectl apply -f k8s/manifests/*.yaml
