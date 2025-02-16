@@ -43,4 +43,4 @@ jobs:
             --values helm/values/cert-manager.yaml
       - name: Apply Manifests
         run: |-
-          find k8s/manifests -name  *.yaml l | xargs -n 1 kubectl apply -f
+          find k8s/manifests -name  *.yaml | xargs -n 1 kubectl apply -f
