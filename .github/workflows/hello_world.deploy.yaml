@@ -1,13 +1,13 @@
 ---
 name: Example CI/CD Pipeline for Hello World App
-# on:
-#   push:
-#     branches: [main]
 on:
-  workflow_run:
-    workflows: ["Deploy Infrastructure"]
-    types:
-      - completed
+  push:
+    branches: [main]
+# on:
+#   workflow_run:
+#     workflows: ["Deploy Infrastructure"]
+#     types:
+#       - completed
 env:
   SERVICE_NAME: hello-world  # container name, should normally be {{ github.repository }}
   PKG_REPO: europe-west2-docker.pkg.dev
