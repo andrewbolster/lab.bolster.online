@@ -8,7 +8,7 @@ service:
   port: 80
 persistentVolume:
   enabled: true
-  path: /mnt/data
+  mountPath: /mnt/data
   capacity: 1Gi
 ingress:
   enabled: true
