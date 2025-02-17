@@ -6,9 +6,24 @@
 
 This is an infrastructure project for creating a 'self service' k8s / gcp deployment and management environment.
 
+## Features
+
+### Persistent Volumes
+
+Add the following to your values.yaml to create a persistent volume claim:
+
+```yaml
+persistentVolume:
+  enabled: true
+  mountPath: /mnt/data
+  capacity: 1Gi
+```
+
+Default storage class is standard-rwo (i.e. spinning platters, not ssd), and capacity is limited at the service level
+
 ## TODO
 
-- [ ] Persistent Volumes
+- [X] Persistent Volumes
 - [ ] Postgres DB (Per Service)
 - [ ] Postgres DB (Shared)
 - [ ] Redis DB (Per Service)
