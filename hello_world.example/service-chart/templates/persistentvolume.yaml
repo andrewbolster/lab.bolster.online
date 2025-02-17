@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce # The volume can be mounted as read-write by a single node.
   hostPath:
-    path: {{ .Values.persistentVolume.path }} # This is an example path on the host
+    path: {{ .Values.persistentVolume.hostPath }} # This is an example path on the host
 
 ---
 
@@ -22,6 +22,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: ssd
   resources:
     requests:
       storage: "{{ .Values.persistentVolume.capacity | default "1Gi" }}"
