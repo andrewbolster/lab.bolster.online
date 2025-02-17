@@ -22,7 +22,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: ssd
+  #storageClassName: ssd # if for some reason you need faster, more expensive storage
   resources:
     requests:
       storage: "{{ .Values.persistentVolume.capacity | default "1Gi" }}"
