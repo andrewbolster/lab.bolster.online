@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  hello_world:
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    develop:
+      watch:
+        - action: sync
+          path: ./app.py
+          target: /app/app.py
+        - action: rebuild
+          path: build/Dockerfile
+        - action: rebuild
+          path: requirements.txt
+    ports:
+      - "80:80"
+    volumes:
+      - hello_world_data:/mnt/data
+
+volumes:
+  hello_world_data:
+    driver: local

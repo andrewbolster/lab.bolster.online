@@ -1,4 +1,5 @@
 ---
+nameOverride: hello-world
 image:
   repository: gcr.io/bolsterlab/lab/hello-world
   tag: latest
@@ -6,6 +7,10 @@ image:
 service:
   type: ClusterIP
   port: 80
+persistentVolume:
+  enabled: true
+  path: /mnt/data
+  capacity: 1Gi
 ingress:
   enabled: true
   className: nginx

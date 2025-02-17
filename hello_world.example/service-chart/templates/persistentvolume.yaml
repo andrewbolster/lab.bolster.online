@@ -1,0 +1,28 @@
+{{- if (.Values.persistentVolume).enabled -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "service-chart.fullname" . }}
+  labels:
+    {{- include "service-chart.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: "{{ .Values.persistentVolume.capacity | default "1Gi" }}"
+  accessModes:
+    - ReadWriteOnce # The volume can be mounted as read-write by a single node.
+  hostPath:
+    path: {{ .Values.persistentVolume.path }} # This is an example path on the host
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ include "service-chart.fullname" . }}-pvc"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.persistentVolume.capacity | default "1Gi" }}"
+{{- end }}

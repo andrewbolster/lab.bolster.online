@@ -59,10 +59,19 @@ spec:
           {{- with .Values.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
+            {{- if $.Values.persistentVolume.enabled -}}
+            - name: "{{ include "service-chart.fullname" . }}-pv"
+              mountPath: "{{ $.Values.persistentVolume.mountPath }}"
+            {{- end }}
           {{- end }}
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
+        {{- if $.Values.persistentVolume.enabled -}}
+            - name: "{{ include "service-chart.fullname" . }}-pv"
+              persistentVolumeClaim:
+                claimName:  "{{ include "service-chart.fullname" . }}-pvc"
+        {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
