@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce # The volume can be mounted as read-write by a single node.
   hostPath:
-    path: {{ .Values.persistentVolume.hostPath }} # This is an example path on the host
+    path: {{ .Values.persistentVolume.mountPath }} # This is an example path on the host
 
 ---
 
