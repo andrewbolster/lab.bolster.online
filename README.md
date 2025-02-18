@@ -24,6 +24,7 @@ Default storage class is standard-rwo (i.e. spinning platters, not ssd), and cap
 ## TODO
 
 - [X] Persistent Volumes
+- [ ] lab.bolster.online
 - [ ] Postgres DB (Per Service)
 - [ ] Postgres DB (Shared)
 - [ ] Redis DB (Per Service)

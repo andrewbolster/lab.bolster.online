@@ -53,6 +53,15 @@ and add the contents to ~/.kube/config to Github secrets as `KUBECONFIG` (Don't 
 
 ~Manually create a 'labs' repository in GCR (I did it in London region so the PKG_REPO is europe-west2-docker.pkg.dev)~ might be unnecessary with the 'Create on Push' role
 
+## DNS Setup
+
+Domain controller of choice (I use Digital Ocean)
+
+Get your ingress-nginx-controller `$EXTERNAL-IP` with `kubectl get svc -n ingress-nginx`
+
+Set the following A records:
+- `lab.bolster.online` -> `$EXTERNAL-IP` : Required if you want to host your own top-level lab, e.g. helm charts, docs, etc (possibly even Backstage later)
+- `*.lab.bolster.online` -> `$EXTERNAL-IP` : Required for the wildcard subdomain routing to the services (cert-manager and ingress-nginx will handle the SSL)
 
 # Other Junk
 * Creation of 'hello-world' app
