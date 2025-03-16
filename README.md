@@ -30,7 +30,7 @@ THIS DOES NOT USE KUBERNETES SECRETS SO YMMV
 ## TODO
 
 - [X] Persistent Volumes
-- [ ] lab.bolster.online
+- [X] lab.bolster.online
 - [ ] Postgres DB (Per Service)
 - [ ] Postgres DB (Shared)
 - [ ] Redis DB (Per Service)
