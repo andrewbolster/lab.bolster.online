@@ -36,12 +36,6 @@ jobs:
             location: ${{ env.CLUSTER_LOCATION }}
       - run: |-
           gcloud --quiet auth configure-docker ${{ env.PKG_REPO }}
-      # - name: Log in to Google Container Registry
-      #   uses: docker/login-action@v3
-      #   with:
-      #     registry: ${{ env.PKG_REPO }}
-      #     username: _json_key
-      #     password: '${{ secrets.GCR_JSON_KEY }}'
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build and push Docker image
@@ -51,6 +45,9 @@ jobs:
           file: ./build/Dockerfile  # path to Dockerfile, should standardise to build/Dockerfile for all services
           push: true
           tags: ${{ env.PKG_REPO }}/${{ env.PROJECT_ID }}/${{env.ARTEFACTS_REPO}}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+      - name: Update Helm Charts
+        run: |-
+          helm repo add 
       - name: Deploy to GKE
         working-directory: hello_world.example  # THIS SHOULDN'T BE NECESSARY IN A REAL PROJECT
         run: |-

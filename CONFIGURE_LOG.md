@@ -61,6 +61,7 @@ Get your ingress-nginx-controller `$EXTERNAL-IP` with `kubectl get svc -n ingres
 
 Set the following A records:
 - `lab.bolster.online` -> `$EXTERNAL-IP` : Required if you want to host your own top-level lab, e.g. helm charts, docs, etc (possibly even Backstage later)
+  - Note: I already have a github root domain so I needed to set a `CNAME` record pointing to that domain to host `lab.bolster.online` using GithubPages but YMMV
 - `*.lab.bolster.online` -> `$EXTERNAL-IP` : Required for the wildcard subdomain routing to the services (cert-manager and ingress-nginx will handle the SSL)
 
 # Other Junk
@@ -68,4 +69,4 @@ Set the following A records:
 * Creation of 'service-chart' helm chart
 * Creation of k8s/manifests
 * Creation of helm/values
-  
+* Update default machine type from e2 medium to e2 micro  `gcloud container node-pools update default-pool --cluster bolsterlab-cluster --machine-type e2-micro`

@@ -1,6 +1,7 @@
 # filepath: my-app/app.py
 from flask import Flask
 import requests
+import os
 
 app = Flask(__name__)
 
@@ -19,12 +20,20 @@ def file_test():
         f.write('hello world')
     with open('/mnt/data/test.txt', 'r') as f:
         return f.read()
+    
+@app.route("/test_env")
+def test_env():
+    """
+    Use this method to test if environment variables are correctly set
+    """
+    return os.environ
 
 @app.route("/health")
 def health():
     tests = {
         'hello_world': requests.get("http://localhost:80/"),
-        'persistent_volume': requests.get("http://localhost:80/file_test")
+        'persistent_volume': requests.get("http://localhost:80/file_test"),
+        'env': requests.get("http://localhost:80/test_env")
     }
     response = {}
     passed = True

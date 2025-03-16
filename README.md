@@ -21,6 +21,12 @@ persistentVolume:
 
 Default storage class is standard-rwo (i.e. spinning platters, not ssd), and capacity is limited at the service level
 
+### Environment Passthrough from Github Secrets
+
+To pass 'sensitive' environment variables to the cluster, we use the [`yaml-update-action`](https://github.com/marketplace/actions/yaml-update-action) to inject secrets (or any envvars) at deploy time into the `values.yaml` at deploy time. 
+
+THIS DOES NOT USE KUBERNETES SECRETS SO YMMV
+
 ## TODO
 
 - [X] Persistent Volumes
