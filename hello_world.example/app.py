@@ -26,7 +26,7 @@ def test_env():
     """
     Use this method to test if environment variables are correctly set
     """
-    return os.environ
+    return dict(os.environ)
 
 @app.route("/health")
 def health():
