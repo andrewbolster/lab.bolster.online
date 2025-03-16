@@ -45,9 +45,6 @@ jobs:
           file: ./build/Dockerfile  # path to Dockerfile, should standardise to build/Dockerfile for all services
           push: true
           tags: ${{ env.PKG_REPO }}/${{ env.PROJECT_ID }}/${{env.ARTEFACTS_REPO}}/${{ env.SERVICE_NAME }}:${{ github.sha }}
-      - name: Update Helm Charts
-        run: |-
-          helm repo add 
       - name: Deploy to GKE
         working-directory: hello_world.example  # THIS SHOULDN'T BE NECESSARY IN A REAL PROJECT
         run: |-
