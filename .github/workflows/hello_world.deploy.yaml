@@ -30,7 +30,7 @@ jobs:
             project_id: ${{ env.PROJECT_ID }}
             install_components: 'gke-gcloud-auth-plugin,kubectl'
       - name: Get GKE Credentials
-        uses: 'google-github-actions/get-gke-credentials@v2'
+        uses: 'google-github-actions/get-gke-credentials@v3'
         with:
             cluster_name: "${{ env.PROJECT_ID }}-cluster"
             location: ${{ env.CLUSTER_LOCATION }}
